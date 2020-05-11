@@ -2,9 +2,10 @@
   "name": "decimal-clock",
   "version": "0.1.0",
   "description": "Simple project to have a RasperryPi (2) with an Adafruit LCD sign show decimal time.",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node build/index.js",
+    "build": "tsc"
   },
   "author": "Felix Sargent",
   "license": "ISC",

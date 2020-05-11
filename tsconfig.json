@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "build",
     "module": "commonjs",
-    "target": "es2016",
+    "target": "es2018",
     "jsx": "preserve",
     "sourceMap": true
   },
