@@ -4,8 +4,10 @@ require('dotenv').config();
 const tz = process.env.TZ || 'America/Los_Angeles';
 
 const decimalize = (timeFrame: string): String => {
+  const now = moment().tz(tz);
+
   const timeArray = (
-    ((moment().tz(tz) - moment().tz(tz).startOf(timeFrame)) /
+    ((now - moment().tz(tz).startOf(timeFrame)) /
       (moment().tz(tz).endOf(timeFrame) - moment().tz(tz).startOf(timeFrame))) *
     100000
   )
@@ -18,12 +20,14 @@ const decimalize = (timeFrame: string): String => {
 
 const duodecimalTime = (): String => {
   const now = moment().tz(tz);
-  return `${now.format('h').replace('10', 'X').replace('11', 'E')}:${now.format(
-      'mm:ss',
-  )}${now.format('p').replace('m', '')}`;
+  return `${now.format('h').replace('10', 'X').replace('11', 'E')}` +
+  `:${now.format('mm:ss').replace('m', '')}`;
 };
 
-const message = () => `${duodecimalTime()}\n${decimalize('day')}%`;
+const message = () => {
+  return `${moment().format('ddd   YYYY-MM-DD')}\n`+
+  `${duodecimalTime()} ${decimalize('day')}%`;
+};
 
 console.log(`Started with:\n${message()}`);
 
