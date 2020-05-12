@@ -4,10 +4,8 @@ require('dotenv').config();
 const tz = process.env.TZ || 'America/Los_Angeles';
 
 const decimalize = (timeFrame: string): String => {
-  const now = moment().tz(tz);
-
   const timeArray = (
-    ((now - moment().tz(tz).startOf(timeFrame)) /
+    ((moment().tz(tz) - moment().tz(tz).startOf(timeFrame)) /
       (moment().tz(tz).endOf(timeFrame) - moment().tz(tz).startOf(timeFrame))) *
     100000
   )
@@ -20,16 +18,31 @@ const decimalize = (timeFrame: string): String => {
 
 const duodecimalTime = (): String => {
   const now = moment().tz(tz);
-  return `${now.format('h').replace('10', 'X').replace('11', 'E')}` +
-  `:${now.format('mm:ss').replace('m', '')}`;
+  return [`${(now.hour() >= 12) ? '1' : ' '}`,
+    `${now.format('h').replace('10', 'X').replace('11', 'E').replace('12', '0')}`,
+    `:${now.format('mm:ss')}`].join('');
 };
 
 const message = () => {
-  return `${moment().format('ddd   YYYY-MM-DD')}\n`+
-  `${duodecimalTime()} ${decimalize('day')}%`;
+  const line1 = [` ${decimalize('day')}%`,
+    `    `,
+    `${moment().format('ddd')}`,
+  ].join('');
+  const line2 = [
+    `${duodecimalTime()}`,
+
+    `   `,
+    `${moment().format('M')}m${moment().format('DD')}d`,
+  ].join('');
+  if (line1.toString().length != 16|| line2.toString().length != 16) {
+    console.error(`line1: ${line1.toString().length}`);
+    console.error(`line2: ${line2.toString().length}`);
+  };
+
+  return line1 + '\n' + line2;
 };
 
-console.log(`Started with:\n${message()}`);
+console.log(`Started with:\n${message()}\n`);
 
 if (process.env.BALENA) {
   const LCDPLATE = require('adafruit-i2c-lcd').plate;
