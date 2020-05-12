@@ -4,13 +4,11 @@ require('dotenv').config();
 const tz = process.env.TZ || 'America/Los_Angeles';
 
 const decimalize = (timeFrame: string): String => {
-  const timeArray = (
+  const timeArray = Math.trunc(
     ((moment().tz(tz) - moment().tz(tz).startOf(timeFrame)) /
       (moment().tz(tz).endOf(timeFrame) - moment().tz(tz).startOf(timeFrame))) *
     100000
-  )
-      .toPrecision(5)
-      .split('');
+  ).toString().padStart(5, '0').split('');
   timeArray.splice(1, 0, ':');
   timeArray.splice(4, 0, ':');
   return timeArray.join('');
