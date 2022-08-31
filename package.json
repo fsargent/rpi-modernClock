@@ -13,7 +13,7 @@
     "@types/node": "^13.13.5",
     "adafruit-i2c-lcd": "^2.0.0",
     "dotenv": "^8.2.0",
-    "moment-timezone": "^0.5.28",
+    "moment-timezone": "^0.5.35",
     "typescript": "^3.8.3"
   },
   "devDependencies": {
